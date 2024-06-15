@@ -1,5 +1,3 @@
-use std::path::Path;
-
 use racoon::core::path::Path;
 use racoon::core::request::Request;
 use racoon::core::response::status::ResponseStatus;
