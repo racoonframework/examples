@@ -5,5 +5,5 @@ edition = "2021"
 
 [dependencies]
 racoon = { git = "https://github.com/racoonframework/racoon", version = "0.1.1" }
-tokio = "1.8.4"
+tokio = "1.18.5"
 
