@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use racoon::core::path::Path;
 use racoon::core::request::Request;
 use racoon::core::response::status::ResponseStatus;
@@ -5,7 +7,7 @@ use racoon::core::response::{HttpResponse, Response};
 use racoon::core::server::Server;
 
 use racoon::forms::fields::file_field::{FileField, UploadedFile};
-use racoon::forms::fields::input_field::InputField;
+use racoon::forms::fields::input_field::{InputField, InputFieldError};
 use racoon::forms::fields::AbstractFields;
 use racoon::forms::FormValidator;
 
@@ -19,7 +21,18 @@ struct UploadForm {
 
 impl FormValidator for UploadForm {
     fn new() -> Self {
-        let name = InputField::new("name");
+        let name: InputField<String> =
+            InputField::new("name").handle_error_message(|error, default_errors| {
+            match error {
+                InputFieldError::MissingField(field_name ) => {
+                    println!("Missing field name: {}", field_name);
+                    return vec!["Custom field missing error".to_string()];
+                }
+                _ => {}
+            }
+            default_errors
+        });
+
         let address = InputField::new("address");
         let profile_photo = FileField::new("profile");
 
